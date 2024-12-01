@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Переводчик фраз</title>
+    <title>Переводчик Пословиц</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         body {
@@ -48,7 +48,7 @@
 </head>
 <body>
 
-<h1>Переводчик фраз</h1>
+<h1>Переводчик Пословиц</h1>
 <div class="translator-container">
     <input type="text" id="inputPhrase" placeholder="Введите фразу" />
     <select id="languageSelect">
@@ -309,7 +309,40 @@
             'zh': '',
             'en': 'Husband and wife live the same life'
         },
-        //loser
+
+
+        //9
+        'choose your wife on saturday, not on sunday': //en
+        {
+            'ru': 'Выбирай жену не в хороводе, а в огороде',
+            'be': 'Жонку выбірай і вачыма, і вушыма',
+            'zh': '人不可貌相',
+            'en': ''
+        },
+        'выбирай жену не в хороводе, а в огороде': //ru
+        {
+            'ru': '',
+            'be': 'Жонку выбірай і вачыма, і вушыма',
+            'zh': '人不可貌相',
+            'en': 'Choose your wife on Saturday, not on Sunday'
+        },
+        'жонку выбірай і вачыма, і вушыма': //be
+        {
+           'ru': 'Выбирай жену не в хороводе, а в огороде',
+            'be': '',
+            'zh': '人不可貌相',
+            'en': 'Choose your wife on Saturday, not on Sunday'
+        },
+        '人不可貌相: //zh
+        {
+           'ru': 'Выбирай жену не в хороводе, а в огороде',
+            'be': 'Жонку выбірай і вачыма, і вушыма',
+            'zh': '',
+            'en': 'Choose your wife on Saturday, not on Sunday'
+        },
+
+
+        //new block
     };
 
     document.getElementById('translateButton').addEventListener('click', function() {
