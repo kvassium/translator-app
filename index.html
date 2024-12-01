@@ -1,0 +1,328 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Переводчик фраз</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+        }
+        .translator-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .translator-container input, .translator-container select, .translator-container button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .translator-container button {
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .translator-container button:hover {
+            background-color: #45a049;
+        }
+        #output {
+            margin-top: 20px;
+            font-size: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Переводчик фраз</h1>
+<div class="translator-container">
+    <input type="text" id="inputPhrase" placeholder="Введите фразу" />
+    <select id="languageSelect">
+        <option value="ru">Русский</option>
+        <option value="be">Белорусский</option>
+        <option value="zh">Китайский</option>
+        <option value="en">Английский</option>
+    </select>
+    <button id="translateButton"><i class="fas fa-language"></i> Перевести</button>
+    <div id="output"></div>
+</div>
+
+<script>
+    const translations = {
+        //1
+        'east or west - home is best': 
+        {
+            'ru': 'В гостях хорошо, а дома лучше',
+            'be': 'Добра на Доне, ды лепей ў сваім доме',
+            'zh': '以及一万天在你的房子，它是困难的一个半天的房子外',
+            'en': ''
+        },
+        'в гостях хорошо, а дома лучше': 
+        {
+            'ru': '',
+            'be': 'Добра на Доне, ды лепей ў сваім доме',
+            'zh': '以及一万天在你的房子，它是困难的一个半天的房子外',
+            'en': 'East or west - home is best'
+        },
+        'добра на доне, ды лепей ў сваім доме': 
+        {
+           'ru': 'В гостях хорошо, а дома лучше',
+            'be': '',
+            'zh': '以及一万天在你的房子，它是困难的一个半天的房子外',
+            'en': 'East or west - home is best'
+        },
+        '以及一万天在你的房子，它是困难的一个半天的房子外': 
+        {
+           'ru': 'В гостях хорошо, а дома лучше',
+            'be': 'Добра на Доне, ды лепей ў сваім доме',
+            'zh': '',
+            'en': 'East or west - home is best'
+        },
+
+
+        //2
+        'there is no place like home': 
+        {
+            'ru': 'Хоть по уши плыть, да дома быть',
+            'be': 'Дадому і конь спрытней бяжыць',
+            'zh': '在家千日好, 出门一时难',
+            'en': ''
+        },
+        'хоть по уши плыть, да дома быть': 
+        {
+            'ru': '',
+            'be': 'Дадому і конь спрытней бяжыць',
+            'zh': '在家千日好, 出门一时难',
+            'en': 'There is no place like home'
+        },
+        'дадому і конь спрытней бяжыць': 
+        {
+           'ru': 'Хоть по уши плыть, да дома быть',
+            'be': '',
+            'zh': '在家千日好, 出门一时难',
+            'en': 'There is no place like home'
+        },
+        '在家千日好, 出门一时难': 
+        {
+           'ru': 'Хоть по уши плыть, да дома быть',
+            'be': 'Дадому і конь спрытней бяжыць',
+            'zh': '',
+            'en': 'There is no place like home'
+        },
+
+
+        //3
+        'dry bread at home is better than roast meat abroad': //en
+        {
+            'ru': 'Свой хлеб слаще чужого калача',
+            'be': 'Лепш у сваёй хатцы, як у чужым палацы',
+            'zh': '在家吃干面包，好过在外吃烤肉；在家千日好，出门事事难',
+            'en': ''
+        },
+        'cвой хлеб слаще чужого калача': //ru
+        {
+            'ru': '',
+            'be': 'Лепш у сваёй хатцы, як у чужым палацы',
+            'zh': '在家吃干面包，好过在外吃烤肉；在家千日好，出门事事难',
+            'en': 'Dry bread at home is better than roast meat abroad'
+        },
+        'лепш у сваёй хатцы, як у чужым палацы': //be
+        {
+           'ru': 'Свой хлеб слаще чужого калача',
+            'be': '',
+            'zh': '在家吃干面包，好过在外吃烤肉；在家千日好，出门事事难',
+            'en': 'Dry bread at home is better than roast meat abroad'
+        },
+        '在家吃干面包，好过在外吃烤肉；在家千日好，出门事事难': //zh
+        {
+           'ru': 'Свой хлеб слаще чужого калача',
+            'be': 'Лепш у сваёй хатцы, як у чужым палацы',
+            'zh': '',
+            'en': 'Dry bread at home is better than roast meat abroad'
+        },
+
+
+        //4
+        'when you go to Rom, you must do as the Romans do': //en
+        {
+            'ru': 'В чужой монастырь со своим уставом не ходят',
+            'be': 'Лепш у сваёй хатцы, як у чужым палацы',
+            'zh': '本会的主',
+            'en': ''
+        },
+        'в чужой монастырь со своим уставом не ходят': //ru
+        {
+            'ru': '',
+            'be': 'Лепш у сваёй хатцы, як у чужым палацы',
+            'zh': '本会的主',
+            'en': 'When you go to Rom, you must do as the Romans do'
+        },
+        'кожны пан у сваёй хаце': //be
+        {
+           'ru': 'В чужой монастырь со своим уставом не ходят',
+            'be': '',
+            'zh': '本会的主',
+            'en': 'When you go to Rom, you must do as the Romans do'
+        },
+        '本会的主': //zh
+        {
+           'ru': 'В чужой монастырь со своим уставом не ходят',
+            'be': 'Кожны пан у сваёй хаце',
+            'zh': '',
+            'en': 'When you go to Rom, you must do as the Romans do'
+        },
+
+
+        //5
+        'do not wash dirty linen in public': //en
+        {
+            'ru': 'Не выноси сора из избы',
+            'be': 'Хату мяці, а шуму вон не нясі',
+            'zh': '不要跟陌生人有关的家庭丑闻',
+            'en': ''
+        },
+        'не выноси сора из избы': //ru
+        {
+            'ru': '',
+            'be': 'Хату мяці, а шуму вон не нясі',
+            'zh': '不要跟陌生人有关的家庭丑闻',
+            'en': 'Do not wash dirty linen in public'
+        },
+        'хату мяці, а шуму вон не нясі': //be
+        {
+           'ru': 'Не выноси сора из избы',
+            'be': '',
+            'zh': '不要跟陌生人有关的家庭丑闻',
+            'en': 'Do not wash dirty linen in public'
+        },
+        '不要跟陌生人有关的家庭丑闻': //zh
+        {
+           'ru': 'Не выноси сора из избы',
+            'be': 'Хату мяці, а шуму вон не нясі',
+            'zh': '',
+            'en': 'Do not wash dirty linen in public'
+        },
+
+
+        //6
+        'every jack must have his jill': //en
+        {
+            'ru': 'Всякая невеста для своего жениха родится',
+            'be': 'Жонак на сходзе не выбіраюць',
+            'zh': '情人眼里出西施',
+            'en': ''
+        },
+        'всякая невеста для своего жениха родится': //ru
+        {
+            'ru': '',
+            'be': 'Жонак на сходзе не выбіраюць',
+            'zh': '情人眼里出西施',
+            'en': 'Every Jack must have his Jill'
+        },
+        'жонак на сходзе не выбіраюць': //be
+        {
+           'ru': 'Всякая невеста для своего жениха родится',
+            'be': '',
+            'zh': '情人眼里出西施',
+            'en': 'Every Jack must have his Jill'
+        },
+        '情人眼里出西施': //zh
+        {
+           'ru': 'Всякая невеста для своего жениха родится',
+            'be': 'Жонак на сходзе не выбіраюць',
+            'zh': '',
+            'en': 'Every Jack must have his Jill'
+        },
+
+
+         //7
+         'a good wife makes a good husband': //en
+        {
+            'ru': 'Плохая жена и хорошего мужа портит',
+            'be': 'За добрым мужам жонка маладзее',
+            'zh': '妻善则丈贤',
+            'en': ''
+        },
+        'плохая жена и хорошего мужа портит': //ru
+        {
+            'ru': '',
+            'be': 'За добрым мужам жонка маладзее',
+            'zh': '妻善则丈贤',
+            'en': 'A good wife makes a good husband'
+        },
+        'за добрым мужам жонка маладзее': //be
+        {
+           'ru': 'Плохая жена и хорошего мужа портит',
+            'be': '',
+            'zh': '妻善则丈贤',
+            'en': 'A good wife makes a good husband'
+        },
+        '妻善则丈贤': //zh
+        {
+           'ru': 'Плохая жена и хорошего мужа портит',
+            'be': 'За добрым мужам жонка маладзее',
+            'zh': '',
+            'en': 'A good wife makes a good husband'
+        },
+
+
+        //8
+        'husband and wife live the same life': //en
+        {
+            'ru': 'Где господин не может, там жена поможет',
+            'be': 'Гаспадар и жонка - найлепшая сполка',
+            'zh': '执子之手，与子偕老',
+            'en': ''
+        },
+        'где господин не может, там жена поможет': //ru
+        {
+            'ru': '',
+            'be': 'Гаспадар и жонка - найлепшая сполка',
+            'zh': '执子之手，与子偕老',
+            'en': 'Husband and wife live the same life'
+        },
+        'гаспадар и жонка - найлепшая сполка': //be
+        {
+           'ru': 'Где господин не может, там жена поможет',
+            'be': '',
+            'zh': '执子之手，与子偕老',
+            'en': 'Husband and wife live the same life'
+        },
+        '执子之手，与子偕老': //zh
+        {
+           'ru': 'Где господин не может, там жена поможет',
+            'be': 'Гаспадар и жонка - найлепшая сполка',
+            'zh': '',
+            'en': 'Husband and wife live the same life'
+        },
+    };
+
+    document.getElementById('translateButton').addEventListener('click', function() {
+        const inputPhrase = document.getElementById('inputPhrase').value.toLowerCase();
+        const selectedLanguage = document.getElementById('languageSelect').value;
+        const outputDiv = document.getElementById('output');
+
+        if (translations[inputPhrase]) {
+            outputDiv.textContent = translations[inputPhrase][selectedLanguage];
+        } else {
+            outputDiv.textContent = 'Перевод не найден';
+        }
+    });
+</script>
+
+</body>
+</html>
